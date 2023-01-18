@@ -18,12 +18,38 @@ module.exports = () => {
       path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
-      
+      // Lets the Webpack play around with the html file provided.
+      new HtmlWebpackPlugin({
+        template: "index.html",
+        title: "Webpack Plugin"
+      }),
+      // Generates a manifest.json
+      new WebpackPwaManifest({
+
+      }),
+      // Pulls in a custom-made service worker from elsewhere.
+      new InjectManifest({
+        swSrc: "./src-sw.js",
+        swDest: "service-worker.js"
+      })
     ],
 
     module: {
       rules: [
-        
+        {// Processes the .css using the provided loaders
+          test: /\.css$/i,
+          use: ['style-loader', 'css-loader'],
+        },
+        {// Processes .js files with the babel loader
+          test: /\.m?js$/,
+          exclude: /(node_modules|bower_components)/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env'],
+            },
+          },
+        },
       ],
     },
   };
