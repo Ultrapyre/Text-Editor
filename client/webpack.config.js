@@ -1,7 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
-const path = require('path');
 const { InjectManifest } = require('workbox-webpack-plugin');
+const path = require('path');
 
 module.exports = () => {
   return {
@@ -17,31 +17,34 @@ module.exports = () => {
     plugins: [
       // Lets the Webpack play around with the html file provided.
       new HtmlWebpackPlugin({
-        template: "index.html",
-        title: "Webpack Plugin"
+        template: "./index.html",
+        title: "JATE"
+      }),
+      //Pulls in a custom-made service worker from elsewhere.
+      new InjectManifest({
+        swSrc: "./src-sw.js",
+        swDest: "src-sw.js"
       }),
       // Generates a manifest.json
       new WebpackPwaManifest({
-        name: 'JATE',
+        name: 'Just Another Text Editor',
         short_name: 'JATE',
-        description: 'Scribble notes or code snippets!',
-        background_color: '#7eb4e2',
-        theme_color: '#7eb4e2',
+        description: 'Take notes with Javascript syntax highlighting',
+        background_color: '#225ca3',
+        theme_color: '#225ca3',
+        id: './',
         start_url: './',
         publicPath: './',
+        orientation: "portrait",
+        display: "standalone",
         icons: [
           {
-            src: path.resolve('assets/images/logo.png'),
+            src: path.resolve('./src/images/logo.png'),
             sizes: [96, 128, 192, 256, 384, 512],
             destination: path.join('assets', 'icons'),
           },
         ],
       }),
-      // Pulls in a custom-made service worker from elsewhere.
-      new InjectManifest({
-        swSrc: "./src-sw.js",
-        swDest: "service-worker.js"
-      })
     ],
 
     module: {
@@ -57,6 +60,7 @@ module.exports = () => {
             loader: 'babel-loader',
             options: {
               presets: ['@babel/preset-env'],
+              plugins: ['@babel/plugin-proposal-object-rest-spread', '@babel/transform-runtime'],
             },
           },
         },
