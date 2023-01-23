@@ -22,13 +22,13 @@ export const putDb = async (content) => {
   //Open the object store inside the database
   const store = db.objectStore('jate')
   //Use .put to update the content in the database with the content given.
-  const request = store.put({jate: content });
+  const request = store.put({ id: 1, value: content });
   //Wait for the request to rummage through the data store to finish
   const result = await request;
-  console.log('🚀 - data saved to the database', result);
+  console.log('🚀 - data saved to the database', result?.value);
 };
 
-//Gets all content from the jate database
+// Method that gets content from the IndexedDB database using the idb module
 export const getDb = async () => {
   console.log('GET ALL from the database.')
   //Makes a connection to the jate db, version number included.
@@ -38,10 +38,10 @@ export const getDb = async () => {
   //Open the object store inside the database
   const store = db.objectStore('jate')
   //getAll is... self-explanatory.
-  const request = store.getAll();
+  const request = store.get(1);
   //Wait for the request to rummage through the data store to finish
   const result = await request;
-  console.log('result.value', result);
+  console.log('result.value', result?.value);
   return result;
 };
 

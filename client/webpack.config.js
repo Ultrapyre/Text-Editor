@@ -27,6 +27,8 @@ module.exports = () => {
       }),
       // Generates a manifest.json
       new WebpackPwaManifest({
+        fingerprints: false,
+        inject: true,
         name: 'Just Another Text Editor',
         short_name: 'JATE',
         description: 'Take notes with Javascript syntax highlighting',
@@ -55,7 +57,7 @@ module.exports = () => {
         },
         {// Processes .js files with the babel loader
           test: /\.m?js$/,
-          exclude: /(node_modules|bower_components)/,
+          exclude: /node_modules/,
           use: {
             loader: 'babel-loader',
             options: {
